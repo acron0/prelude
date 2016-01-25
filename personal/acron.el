@@ -1,8 +1,11 @@
 ;;
-(load-theme 'ample-zen t)
+(load-theme 'farmhouse-dark t)
 
 ;;
 (aggressive-indent-global-mode t)
+
+;; font size
+(set-default-font "Inconsolata-12")
 
 ;;;;
 (defun sw1nn-nrepl-current-server-buffer ()
@@ -22,6 +25,11 @@
   (windmove-up)
   (cider-switch-to-relevant-repl-buffer))
 
-;;
-;; (require 'rainbow-blocks)
-;; (add-hook 'clojure-mode-hook 'rainbow-blocks-mode)
+(defun def-clojure-key ()
+  (define-key cider-mode-map (kbd "C-c C-z") 'sw1nn-cider-perspective))
+
+(add-hook 'clojure-mode-hook #'def-clojure-keys)
+
+(provide 'acron)
+
+;;; acron.el ends here
