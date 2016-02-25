@@ -1,4 +1,8 @@
 ;;
+(prelude-require-packages
+ '(farmhouse-theme
+   aggressive-indent))
+
 (load-theme 'farmhouse-dark t)
 
 ;;
