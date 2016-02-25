@@ -1,7 +1,9 @@
 ;;
 (prelude-require-packages
  '(farmhouse-theme
-   aggressive-indent))
+   aggressive-indent
+   align-cljlet
+   paredit))
 
 (load-theme 'farmhouse-dark t)
 
@@ -33,6 +35,7 @@
   (define-key cider-mode-map (kbd "C-c C-z") 'sw1nn-cider-perspective))
 
 (add-hook 'clojure-mode-hook #'def-clojure-keys)
+(add-hook 'clojure-mode-hook #'rainbow-mode)
 
 (provide 'acron)
 
