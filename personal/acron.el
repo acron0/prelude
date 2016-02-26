@@ -1,11 +1,11 @@
 ;;
 (prelude-require-packages
- '(farmhouse-theme
+ '(noctilux-theme
    aggressive-indent
    align-cljlet
    paredit))
 
-(load-theme 'farmhouse-dark t)
+(load-theme 'noctilux t)
 
 ;;
 (aggressive-indent-global-mode t)
@@ -36,6 +36,9 @@
 
 (add-hook 'clojure-mode-hook #'def-clojure-keys)
 (add-hook 'clojure-mode-hook #'rainbow-mode)
+(add-hook 'clojure-mode-hook #'linum-mode)
+
+(scroll-bar-mode 0)
 
 (provide 'acron)
 
