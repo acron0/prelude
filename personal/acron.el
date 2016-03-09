@@ -5,41 +5,38 @@
    align-cljlet
    paredit))
 
+;;
 (load-theme 'noctilux t)
+(set-default-font "Inconsolata-12")
 
 ;;
 (aggressive-indent-global-mode t)
+(scroll-bar-mode 0)
 
-;; font size
-(set-default-font "Inconsolata-12")
-
-;;;;
-(defun sw1nn-nrepl-current-server-buffer ()
-  (let ((nrepl-server-buf (with-current-buffer (cider-current-repl-buffer)
-                            nrepl-server-buffer)))
-    (when nrepl-server-buf
-      (get-buffer nrepl-server-buf))))
-
-(defun sw1nn-cider-perspective ()
-  (interactive)
-  (cider-switch-to-last-clojure-buffer)
-  (delete-other-windows)
-  (split-window-below)
-  (windmove-down)
-  (shrink-window 15)
-  (switch-to-buffer (sw1nn-nrepl-current-server-buffer))
-  (windmove-up)
-  (cider-switch-to-relevant-repl-buffer))
-
-(defun def-clojure-key ()
-  (define-key cider-mode-map (kbd "C-c C-z") 'sw1nn-cider-perspective))
-
-(add-hook 'clojure-mode-hook #'def-clojure-keys)
+;; modes
 (add-hook 'clojure-mode-hook #'rainbow-mode)
 (add-hook 'clojure-mode-hook #'linum-mode)
 
-(scroll-bar-mode 0)
+;; funcs
+(defun cider-repl-reset ()
+  (interactive)
+  (save-some-buffers)
+  (with-current-buffer (cider-current-repl-buffer)
+    (goto-char (point-max))
+    (insert "(user/reset)")
+    (cider-repl-return)))
 
+;; bindings
+(eval-after-load 'cider
+  '(progn
+     (define-key cider-mode-map (kbd "C-c ,")   'cider-test-run-test)))
+
+(eval-after-load 'cider-repl
+  '(progn
+     (define-key cider-repl-mode-map (kbd "C-c #")   'cider-repl-clear-buffer)
+     (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
+
+(message "acron is loaded. I <3 MC.")
 (provide 'acron)
 
 ;;; acron.el ends here
