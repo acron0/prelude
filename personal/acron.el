@@ -3,7 +3,8 @@
  '(noctilux-theme
    aggressive-indent
    align-cljlet
-   paredit))
+   paredit
+   clj-refactor))
 
 ;;
 (load-theme 'noctilux t)
