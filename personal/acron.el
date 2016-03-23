@@ -37,6 +37,9 @@
      (define-key cider-repl-mode-map (kbd "C-c #")   'cider-repl-clear-buffer)
      (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
 
+;; unbindings
+(global-unset-key (kbd "<f11>"))
+
 (message "acron is loaded. I <3 MC.")
 (provide 'acron)
 
