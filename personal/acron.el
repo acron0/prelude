@@ -35,7 +35,8 @@
 ;; bindings
 (eval-after-load 'cider
   '(progn
-     (define-key cider-mode-map (kbd "C-c ,")   'cider-test-run-test)))
+     (define-key cider-mode-map (kbd "C-c ,")   'cider-test-run-test)
+     (define-key cider-mode-map (kbd "C-c C-,") 'cider-test-run-project-tests)))
 
 (eval-after-load 'cider-repl
   '(progn
