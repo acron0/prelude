@@ -1,14 +1,19 @@
 ;;
 (prelude-require-packages
- '(noctilux-theme
+ '(sublime-themes
    aggressive-indent
    align-cljlet
    paredit
    clj-refactor))
 
 ;;
-(load-theme 'noctilux t)
+(load-theme 'spolsky t)
+(custom-theme-set-variables
+ 'spolsky
+ '(linum-format " %i "))
+
 (set-default-font "Inconsolata-12")
+
 
 ;;
 (aggressive-indent-global-mode t)
