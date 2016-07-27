@@ -4,6 +4,7 @@
    aggressive-indent
    align-cljlet
    paredit
+   nyan-mode
    clj-refactor))
 
 ;;
@@ -13,11 +14,12 @@
  '(linum-format " %i "))
 
 (set-default-font "Inconsolata-12")
-
+(set-background-color "black")
 
 ;;
 (aggressive-indent-global-mode t)
 (scroll-bar-mode 0)
+(nyan-mode 1)
 
 ;; modes
 (add-hook 'clojure-mode-hook #'rainbow-mode)
