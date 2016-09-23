@@ -48,6 +48,10 @@
 ;; unbindings
 (global-unset-key (kbd "<f11>"))
 
+;; open buffer
+(find-file "~/notes")
+(split-window-right)
+
 (message "acron is loaded. I <3 MC.")
 (provide 'acron)
 

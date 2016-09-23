@@ -22,3 +22,5 @@ tramp
 /var/pcache
 .emacs.desktop
 .emacs.desktop.lock
+local.el
+cider-history
