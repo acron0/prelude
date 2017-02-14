@@ -3,9 +3,10 @@
  '(sublime-themes
    aggressive-indent
    align-cljlet
-   paredit
+   ;; paredit
    nyan-mode
-   clj-refactor))
+   clj-refactor
+   helm-swoop))
 
 ;;
 (load-theme 'spolsky t)
@@ -21,9 +22,16 @@
 (scroll-bar-mode 0)
 (nyan-mode 1)
 
+;;
+(setq cider-repl-history-file (concat user-emacs-directory "cider-history")
+      cider-repl-history-size 1000)
+
 ;; modes
-(add-hook 'clojure-mode-hook #'rainbow-mode)
-(add-hook 'clojure-mode-hook #'linum-mode)
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (rainbow-mode t)
+            (linum-mode t)
+            (message "Hello, Clojure!")))
 
 ;; funcs
 (defun cider-repl-reset ()
@@ -33,6 +41,10 @@
     (goto-char (point-max))
     (insert "(user/reset)")
     (cider-repl-return)))
+
+(defun insert-date-time ()
+  (interactive)
+  (insert (shell-command-to-string "bash -c 'echo -n $(date +%Y%m%d%H%M)'")))
 
 ;; bindings
 (eval-after-load 'cider
@@ -45,8 +57,11 @@
      (define-key cider-repl-mode-map (kbd "C-c #")   'cider-repl-clear-buffer)
      (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
 
+(global-set-key (kbd "C-x /") 'helm-swoop)
+(global-set-key (kbd "C-x C-/") 'helm-multi-swoop-all)
+
 ;; unbindings
-(global-unset-key (kbd "<f11>"))
+;;(global-unset-key (kbd "<f11>"))
 
 ;; open buffer
 (find-file "~/notes")
