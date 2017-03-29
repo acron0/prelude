@@ -24,3 +24,4 @@ tramp
 .emacs.desktop.lock
 local.el
 cider-history
+.mc-lists.el

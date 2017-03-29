@@ -59,6 +59,7 @@
 
 (global-set-key (kbd "C-x /") 'helm-swoop)
 (global-set-key (kbd "C-x C-/") 'helm-multi-swoop-all)
+(global-set-key (kbd "C-x C-p") 'crux-swap-windows)
 
 ;; unbindings
 ;;(global-unset-key (kbd "<f11>"))
