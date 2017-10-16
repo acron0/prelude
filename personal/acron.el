@@ -6,16 +6,24 @@
    ;; paredit
    nyan-mode
    clj-refactor
-   helm-swoop))
+   helm-swoop
+   git-gutter+
+   xterm-color
+   doom-themes
+   magit-gh-pulls))
 
 ;;
-(load-theme 'spolsky t)
-(custom-theme-set-variables
- 'spolsky
- '(linum-format " %i "))
+;; (load-theme 'spolsky t)
+;; (custom-theme-set-variables
+;;  'spolsky
+;;  '(linum-format " %i "))
+
+(load-theme 'doom-one t)
+(doom-themes-visual-bell-config)
+(doom-themes-neotree-config)
 
 (set-default-font "Inconsolata-12")
-(set-background-color "black")
+;;(set-background-color "black")
 
 ;;
 (aggressive-indent-global-mode t)
@@ -30,8 +38,11 @@
 (add-hook 'clojure-mode-hook
           (lambda ()
             (rainbow-mode t)
-            (linum-mode t)
+            ;;(linum-mode t)
             (message "Hello, Clojure!")))
+
+(add-hook 'magit-mode-hook
+          'turn-on-magit-gh-pulls)
 
 ;; funcs
 (defun cider-repl-reset ()
@@ -67,6 +78,19 @@
 ;; open buffer
 (find-file "~/notes")
 (split-window-right)
+
+;; cljs
+(setq cider-cljs-lein-repl
+      "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
+
+;; org mode
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot . t)))
+
+(setq org-src-fontify-natively t)
+
+(add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
 (message "acron is loaded. I <3 MC.")
 (provide 'acron)
