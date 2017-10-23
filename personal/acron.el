@@ -10,7 +10,9 @@
    git-gutter+
    xterm-color
    doom-themes
-   magit-gh-pulls))
+   magit-gh-pulls
+   flycheck-clojure
+   flycheck-pos-tip))
 
 ;;
 ;; (load-theme 'spolsky t)
@@ -43,6 +45,11 @@
 
 (add-hook 'magit-mode-hook
           'turn-on-magit-gh-pulls)
+
+(eval-after-load 'flycheck '(flycheck-clojure-setup))
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(eval-after-load 'flycheck
+  '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 ;; funcs
 (defun cider-repl-reset ()
