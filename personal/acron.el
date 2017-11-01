@@ -11,8 +11,9 @@
    xterm-color
    doom-themes
    magit-gh-pulls
-   flycheck-clojure
-   flycheck-pos-tip))
+   ;;flycheck-clojure ;; way too slow to be usable
+   ;;flycheck-pos-tip
+   ))
 
 ;;
 ;; (load-theme 'spolsky t)
@@ -46,10 +47,10 @@
 (add-hook 'magit-mode-hook
           'turn-on-magit-gh-pulls)
 
-(eval-after-load 'flycheck '(flycheck-clojure-setup))
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(eval-after-load 'flycheck
-  '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
+;; (eval-after-load 'flycheck
+;;   '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 ;; funcs
 (defun cider-repl-reset ()
@@ -90,10 +91,12 @@
 (setq cider-cljs-lein-repl
       "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
 
-;; org mode
+;; org
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((dot . t)))
+ '((dot . t)
+   (sh . t)
+   (shell . t)))
 
 (setq org-src-fontify-natively t)
 
