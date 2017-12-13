@@ -95,8 +95,7 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((dot . t)
-   (sh . t)
-   (shell . t)))
+   (sh . t)))
 
 (setq org-src-fontify-natively t)
 
