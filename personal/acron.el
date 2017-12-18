@@ -22,6 +22,7 @@
 ;;  '(linum-format " %i "))
 
 (load-theme 'doom-one t)
+(disable-theme 'zenburn)
 (doom-themes-visual-bell-config)
 (doom-themes-neotree-config)
 
