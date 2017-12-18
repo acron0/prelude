@@ -41,6 +41,7 @@
 (add-hook 'clojure-mode-hook
           (lambda ()
             (rainbow-mode t)
+            (idle-highlight-mode t)
             ;;(linum-mode t)
             (message "Hello, Clojure!")))
 
