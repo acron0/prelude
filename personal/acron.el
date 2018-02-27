@@ -81,13 +81,10 @@
 (global-set-key (kbd "C-x /") 'helm-swoop)
 (global-set-key (kbd "C-x C-/") 'helm-multi-swoop-all)
 (global-set-key (kbd "C-x C-p") 'crux-swap-windows)
+(global-set-key (kbd "C-c c o") 'org-capture)
 
 ;; unbindings
 ;;(global-unset-key (kbd "<f11>"))
-
-;; open buffer
-(find-file "~/notes")
-(split-window-right)
 
 ;; cljs
 (setq cider-cljs-lein-repl
@@ -97,12 +94,70 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((dot . t)
-   (sh . t)))
+   (shell . t)
+   (clojure . t)))
 
 (setq org-src-fontify-natively t)
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
+;; stolen from here: https://github.com/otfrom/otfrom-org-emacs/blob/master/org/config.org#org-mode
+(setq org-agenda-files
+      (append
+       (file-expand-wildcards "~/org/*.org")))
+
+(setq org-default-notes-file "~/org/capture.org")
+
+(setq org-use-fast-todo-selection t)
+(setq org-todo-keywords
+      '((sequence "UPCOMING(u)" "PROJECT(p)" "|" "SHIPPED(s)")
+        (sequence "TODO(t)" "NEXT(n!/!)" "|" "DONE(d)")
+        (sequence "WAITING(w@/!)" "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)" "MEETING")))
+
+(setq org-todo-state-tags-triggers
+      '(("CANCELLED" ("CANCELLED" . t))
+        ("WAITING" ("WAITING" . t))
+        ("INACTIVE" ("WAITING") ("INACTIVE" . t))
+        (done ("WAITING") ("INACTIVE"))
+        ("TODO" ("WAITING") ("CANCELLED") ("INACTIVE"))
+        ("NEXT" ("WAITING") ("CANCELLED") ("INACTIVE"))
+        ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))))
+
+(setq org-refile-allow-creating-parent-nodes t)
+
+(setq org-refile-targets
+      '((nil :maxlevel . 9)
+        (org-agenda-files :maxlevel . 9)))
+(setq org-refile-use-outline-path t)
+
+
+(setq org-capture-templates
+      '(("t" "To do"
+         entry (file+datetree org-default-notes-file)
+         "* TODO %?\n%^{Owner}p\n%U\n%a\n"
+         :empty-lines-before 1)
+        ("n" "Doing RIGHT NOW"
+         entry (file+datetree org-default-notes-file)
+         "* NEXT %?\n%^{Owner}p\n%U\n%a\n"
+         :clock-in t :clock-resume t
+         :empty-lines-before 1)
+        ("m" "Meeting"
+         entry (file+datetree org-default-notes-file)
+         "* MEETING with %? :MEETING:\n%T\n%a"
+         :clock-in t :clock-resume t
+         :empty-lines-before 1)
+        ("k" "Kaylee Checks"
+         entry (file+datetree "~/org/kaylee-checks.org")
+         "* NEXT Kaylee Checks\n%U\n%a\n%?%[~/org/templates/kaylee-template.org]"
+         :clock-in t :clock-resume t
+         :empty-lines-before 1)
+        ("i" "Idea"
+         entry (file org-default-notes-file)
+         "* %? :IDEA: \n%t"
+         :clock-in t :clock-resume t
+         :empty-lines-before 1)))
+
+;; done
 (message "acron is loaded. I <3 MC.")
 (provide 'acron)
 
