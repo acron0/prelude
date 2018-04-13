@@ -11,6 +11,8 @@
    xterm-color
    doom-themes
    magit-gh-pulls
+   fold-dwim
+   fold-dwim-org
    ;;flycheck-clojure ;; way too slow to be usable
    ;;flycheck-pos-tip
    ))
@@ -30,6 +32,7 @@
 ;;(set-background-color "black")
 
 ;;
+(global-git-gutter+-mode t)
 (aggressive-indent-global-mode t)
 (scroll-bar-mode 0)
 (nyan-mode 1)
@@ -43,6 +46,8 @@
           (lambda ()
             (rainbow-mode t)
             (idle-highlight-mode t)
+            (hs-minor-mode t)
+            (fold-dwim-org/minor-mode t)
             ;;(linum-mode t)
             (message "Hello, Clojure!")))
 
