@@ -13,6 +13,9 @@
    magit-gh-pulls
    fold-dwim
    fold-dwim-org
+   all-the-icons
+   all-the-icons-dired
+   plantuml-mode
    ;;flycheck-clojure ;; way too slow to be usable
    ;;flycheck-pos-tip
    ))
@@ -23,7 +26,9 @@
 ;;  'spolsky
 ;;  '(linum-format " %i "))
 
-(load-theme 'doom-one t)
+(load-theme 'doom-vibrant t)
+(load-theme 'smart-mode-line-respectful t)
+
 (disable-theme 'zenburn)
 (doom-themes-visual-bell-config)
 (doom-themes-neotree-config)
@@ -53,6 +58,9 @@
 
 (add-hook 'magit-mode-hook
           'turn-on-magit-gh-pulls)
+
+(add-hook 'dired-mode-hook
+          'all-the-icons-dired-mode)
 
 ;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -100,9 +108,11 @@
  'org-babel-load-languages
  '((dot . t)
    (shell . t)
-   (clojure . t)))
+   (clojure . t)
+   (plantuml . t)))
 
 (setq org-src-fontify-natively t)
+(setq org-plantuml-jar-path "~/bin/plantuml.jar")
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
