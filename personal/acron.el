@@ -39,8 +39,13 @@
 ;;
 (global-git-gutter+-mode t)
 (aggressive-indent-global-mode t)
+(add-to-list 'aggressive-indent-excluded-modes 'sass-mode)
 (scroll-bar-mode 0)
 (nyan-mode 1)
+
+;; WH special
+(setq tab-width 2)
+;;(setq clojure-indent-style ":always-indent")
 
 ;;
 (setq cider-repl-history-file (concat user-emacs-directory "cider-history")
@@ -49,11 +54,32 @@
 ;; modes
 (add-hook 'clojure-mode-hook
           (lambda ()
+            (projectile-mode t)
             (rainbow-mode t)
             (idle-highlight-mode t)
             (hs-minor-mode t)
             (fold-dwim-org/minor-mode t)
+            (clj-refactor-mode t)
             ;;(linum-mode t)
+            ;; wh style (0 = clj align)
+            (put-clojure-indent ':require 0)
+            (put-clojure-indent ':require-macros 0)
+            (put-clojure-indent ':import 0)
+            (put-clojure-indent 's/fdef 1)
+            (put-clojure-indent 'reg-event-fx 0)
+            (put-clojure-indent 'reg-event-db 0)
+            (put-clojure-indent 'reg-sub 0)
+            (put-clojure-indent 'and 0)
+            (put-clojure-indent 'or 0)
+            (put-clojure-indent 'some->> 0)
+            (put-clojure-indent 'some-> 0)
+            (put-clojure-indent 'as->> 0)
+            (put-clojure-indent 'as-> 0)
+            (put-clojure-indent 'mapv 0)
+            (put-clojure-indent 'mlet 1)
+            (put-clojure-indent 'merge 0)
+            (put-clojure-indent 'i-util/run-async 1)
+
             (message "Hello, Clojure!")))
 
 (add-hook 'magit-mode-hook
@@ -62,34 +88,35 @@
 (add-hook 'dired-mode-hook
           'all-the-icons-dired-mode)
 
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (eq major-mode 'clojure-mode)
+              (clojure-sort-ns))))
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (eq major-mode 'clojurescript-mode)
+              (clojure-sort-ns))))
+
 ;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 ;; (eval-after-load 'flycheck
 ;;   '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
-;; funcs
-(defun cider-repl-reset ()
-  (interactive)
-  (save-some-buffers)
-  (with-current-buffer (cider-current-repl-buffer)
-    (goto-char (point-max))
-    (insert "(user/reset)")
-    (cider-repl-return)))
-
-(defun insert-date-time ()
-  (interactive)
-  (insert (shell-command-to-string "bash -c 'echo -n $(date +%Y%m%d%H%M)'")))
-
 ;; bindings
 (eval-after-load 'cider
   '(progn
      (define-key cider-mode-map (kbd "C-c ,")   'cider-test-run-test)
-     (define-key cider-mode-map (kbd "C-c C-,") 'cider-test-run-project-tests)))
+     (define-key cider-mode-map (kbd "C-c C-,") 'cider-test-run-project-tests)
+     (push '"def-spec-test" cider-test-defining-forms)))
 
 (eval-after-load 'cider-repl
   '(progn
      (define-key cider-repl-mode-map (kbd "C-c #")   'cider-repl-clear-buffer)
      (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
+
+;; allow remembering risky variables
+(defun risky-local-variable-p (sym &optional _ignored) nil)
 
 (global-set-key (kbd "C-x /") 'helm-swoop)
 (global-set-key (kbd "C-x C-/") 'helm-multi-swoop-all)
