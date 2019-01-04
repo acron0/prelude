@@ -122,6 +122,7 @@
 (global-set-key (kbd "C-x C-/") 'helm-multi-swoop-all)
 (global-set-key (kbd "C-x C-p") 'crux-swap-windows)
 (global-set-key (kbd "C-c c o") 'org-capture)
+(global-set-key (kbd "C-x <end>") 'golden-ratio)
 
 ;; unbindings
 ;;(global-unset-key (kbd "<f11>"))
