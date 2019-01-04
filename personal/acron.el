@@ -116,7 +116,8 @@
      (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
 
 ;; allow remembering risky variables
-(defun risky-local-variable-p (sym &optional _ignored) nil)
+;;(defun risky-local-variable-p (sym &optional _ignored) nil)
+(advice-add 'risky-local-variable-p :override #'ignore)
 
 (global-set-key (kbd "C-x /") 'helm-swoop)
 (global-set-key (kbd "C-x C-/") 'helm-multi-swoop-all)
