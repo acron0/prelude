@@ -16,9 +16,13 @@
    all-the-icons
    all-the-icons-dired
    plantuml-mode
+   auto-dim-other-buffers
+   flycheck-joker
+   flycheck-pos-tip
    ;;flycheck-clojure ;; way too slow to be usable
-   ;;flycheck-pos-tip
    ))
+
+(require 'flycheck-joker)
 
 ;;
 ;; (load-theme 'spolsky t)
@@ -42,6 +46,7 @@
 (add-to-list 'aggressive-indent-excluded-modes 'sass-mode)
 (scroll-bar-mode 0)
 (nyan-mode 1)
+(auto-dim-other-buffers-mode 1)
 
 ;; WH special
 (setq tab-width 2)
@@ -60,6 +65,9 @@
             (hs-minor-mode t)
             (fold-dwim-org/minor-mode t)
             (clj-refactor-mode t)
+            (flycheck-pos-tip-mode t)
+            (whitespace-mode 0)
+
             ;;(linum-mode t)
             ;; wh style (0 = clj align)
             (put-clojure-indent ':require 0)
@@ -75,10 +83,15 @@
             (put-clojure-indent 'some-> 0)
             (put-clojure-indent 'as->> 0)
             (put-clojure-indent 'as-> 0)
+            (put-clojure-indent 'cond-> 0)
             (put-clojure-indent 'mapv 0)
             (put-clojure-indent 'mlet 1)
+            (put-clojure-indent 'hash-map 0)
             (put-clojure-indent 'merge 0)
             (put-clojure-indent 'i-util/run-async 1)
+            (put-clojure-indent 'html/deftemplate 0)
+            (put-clojure-indent 'defroutes 0)
+            (put-clojure-indent 'merge 0)
 
             (message "Hello, Clojure!")))
 
@@ -96,6 +109,11 @@
 (add-hook 'before-save-hook
           (lambda ()
             (when (eq major-mode 'clojurescript-mode)
+              (clojure-sort-ns))))
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (eq major-mode 'clojurec-mode)
               (clojure-sort-ns))))
 
 ;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
@@ -190,19 +208,26 @@
          "* MEETING with %? :MEETING:\n%T\n%a"
          :clock-in t :clock-resume t
          :empty-lines-before 1)
-        ("k" "Kaylee Checks"
-         entry (file+datetree "~/org/kaylee-checks.org")
-         "* NEXT Kaylee Checks\n%U\n%a\n%?%[~/org/templates/kaylee-template.org]"
-         :clock-in t :clock-resume t
-         :empty-lines-before 1)
         ("i" "Idea"
          entry (file org-default-notes-file)
          "* %? :IDEA: \n%t"
          :clock-in t :clock-resume t
          :empty-lines-before 1)))
 
+;; https://emacs.stackexchange.com/questions/2189/how-can-i-prevent-a-command-from-using-specific-windows
+(defun toggle-window-dedicated ()
+  "Control whether or not Emacs is allowed to display another
+buffer in current window."
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window (not (window-dedicated-p window))))
+       "%s: Can't touch this!"
+     "%s is up for grabs.")
+   (current-buffer)))
+
 ;; done
-(message "acron is loaded. I <3 MC.")
+(message "acron is loaded.")
 (provide 'acron)
 
 ;;; acron.el ends here
