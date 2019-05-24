@@ -226,6 +226,10 @@ buffer in current window."
      "%s is up for grabs.")
    (current-buffer)))
 
+;; transparency?!
+(set-frame-parameter (selected-frame) 'alpha '(85 . 50))
+(add-to-list 'default-frame-alist '(alpha . (85 . 50)))
+
 ;; done
 (message "acron is loaded.")
 (provide 'acron)
