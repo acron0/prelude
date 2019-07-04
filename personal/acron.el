@@ -90,25 +90,28 @@
             (put-clojure-indent 'as-> 0)
             (put-clojure-indent 'as->> 0)
             (put-clojure-indent 'assoc 0)
+            (put-clojure-indent 'asynchronously 0)
             (put-clojure-indent 'cond-> 0)
+            (put-clojure-indent 'def-spec-test 0)
             (put-clojure-indent 'defroutes 0)
             (put-clojure-indent 'fail 0)
             (put-clojure-indent 'hash-map 0)
             (put-clojure-indent 'html/deftemplate 0)
             (put-clojure-indent 'i-util/run-async 1)
+            (put-clojure-indent 'i-util/run-async 1)
             (put-clojure-indent 'if-mlet 1)
             (put-clojure-indent 'mapv 0)
             (put-clojure-indent 'mdo 0)
             (put-clojure-indent 'merge 0)
-            (put-clojure-indent 'mlet 1)
-            (put-clojure-indent 'or 0)
+            (put-clojure-indent 'merge 0)
+            (put-clojure-indent 'prom/if-mlet 1)
+            (put-clojure-indent 'prom/when-mlet 1)
             (put-clojure-indent 'reg-event-db 0)
             (put-clojure-indent 'reg-event-fx 0)
+            (put-clojure-indent 'reg-fx 0)
             (put-clojure-indent 'reg-sub 0)
+            (put-clojure-indent 'reg-sub-raw 0)
             (put-clojure-indent 's/fdef 1)
-            (put-clojure-indent 'some-> 0)
-            (put-clojure-indent 'some->> 0)
-            (put-clojure-indent 'when-mlet 1)
 
             (message "Hello, Clojure!")))
 
@@ -143,6 +146,7 @@
   '(progn
      (define-key cider-mode-map (kbd "C-c ,")   'cider-test-run-test)
      (define-key cider-mode-map (kbd "C-c C-,") 'cider-test-run-project-tests)
+     (define-key cider-mode-map (kbd "C-c C-q") 'cider-quit)
      (push '"def-spec-test" cider-test-defining-forms)))
 
 (eval-after-load 'cider-repl
@@ -242,6 +246,15 @@ buffer in current window."
        "%s: Can't touch this!"
      "%s is up for grabs.")
    (current-buffer)))
+
+;; fns
+(defun wh-start-cmd ()
+  (interactive)
+  (insert "(do (require 'wh.dev) (wh.dev/go))"))
+
+(defun wh-prt-fn (prefix)
+  (interactive "sString for prefix: ")
+  (insert "(defn prt [x] (println \"" prefix "\" x) x)"))
 
 ;; transparency?!
 (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
