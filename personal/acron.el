@@ -37,7 +37,18 @@
 (doom-themes-visual-bell-config)
 (doom-themes-neotree-config)
 
-(set-default-font "Inconsolata-12")
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+  (progn
+    (message "Microsoft Windows")))
+ ((string-equal system-type "darwin") ; Mac OS X
+  (progn
+    (message "Mac OS X")
+    (set-default-font "Inconsolata-14")))
+ ((string-equal system-type "gnu/linux") ; linux
+  (progn
+    (message "Linux")
+    (set-default-font "Inconsolata-12"))))
 ;;(set-background-color "black")
 
 ;;
@@ -50,7 +61,7 @@
 
 ;; WH special
 (setq tab-width 2)
-;;(setq clojure-indent-style ":always-indent")
+(setq clojure-indent-style :align-arguments)
 
 ;;
 (setq cider-repl-history-file (concat user-emacs-directory "cider-history")
@@ -70,28 +81,34 @@
 
             ;;(linum-mode t)
             ;; wh style (0 = clj align)
+            (put-clojure-indent '-> 0)
+            (put-clojure-indent '->> 0)
+            (put-clojure-indent ':import 0)
             (put-clojure-indent ':require 0)
             (put-clojure-indent ':require-macros 0)
-            (put-clojure-indent ':import 0)
-            (put-clojure-indent 's/fdef 1)
-            (put-clojure-indent 'reg-event-fx 0)
-            (put-clojure-indent 'reg-event-db 0)
-            (put-clojure-indent 'reg-sub 0)
             (put-clojure-indent 'and 0)
-            (put-clojure-indent 'or 0)
-            (put-clojure-indent 'some->> 0)
-            (put-clojure-indent 'some-> 0)
-            (put-clojure-indent 'as->> 0)
             (put-clojure-indent 'as-> 0)
+            (put-clojure-indent 'as->> 0)
+            (put-clojure-indent 'assoc 0)
             (put-clojure-indent 'cond-> 0)
-            (put-clojure-indent 'mapv 0)
-            (put-clojure-indent 'mlet 1)
-            (put-clojure-indent 'hash-map 0)
-            (put-clojure-indent 'merge 0)
-            (put-clojure-indent 'i-util/run-async 1)
-            (put-clojure-indent 'html/deftemplate 0)
             (put-clojure-indent 'defroutes 0)
+            (put-clojure-indent 'fail 0)
+            (put-clojure-indent 'hash-map 0)
+            (put-clojure-indent 'html/deftemplate 0)
+            (put-clojure-indent 'i-util/run-async 1)
+            (put-clojure-indent 'if-mlet 1)
+            (put-clojure-indent 'mapv 0)
+            (put-clojure-indent 'mdo 0)
             (put-clojure-indent 'merge 0)
+            (put-clojure-indent 'mlet 1)
+            (put-clojure-indent 'or 0)
+            (put-clojure-indent 'reg-event-db 0)
+            (put-clojure-indent 'reg-event-fx 0)
+            (put-clojure-indent 'reg-sub 0)
+            (put-clojure-indent 's/fdef 1)
+            (put-clojure-indent 'some-> 0)
+            (put-clojure-indent 'some->> 0)
+            (put-clojure-indent 'when-mlet 1)
 
             (message "Hello, Clojure!")))
 
@@ -134,7 +151,7 @@
      (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
 
 ;; allow remembering risky variables
-;;(defun risky-local-variable-p (sym &optional _ignored) nil)
+(defun risky-local-variable-p (sym &optional _ignored) nil)
 (advice-add 'risky-local-variable-p :override #'ignore)
 
 (global-set-key (kbd "C-x /") 'helm-swoop)
