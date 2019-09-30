@@ -92,6 +92,7 @@
             (put-clojure-indent 'assoc 0)
             (put-clojure-indent 'asynchronously 0)
             (put-clojure-indent 'cond-> 0)
+            (put-clojure-indent 'cond->> 0)
             (put-clojure-indent 'def-spec-test 0)
             (put-clojure-indent 'defroutes 0)
             (put-clojure-indent 'fail 0)
@@ -104,6 +105,7 @@
             (put-clojure-indent 'mdo 0)
             (put-clojure-indent 'merge 0)
             (put-clojure-indent 'merge 0)
+            (put-clojure-indent 'prom/mlet 1)
             (put-clojure-indent 'prom/if-mlet 1)
             (put-clojure-indent 'prom/when-mlet 1)
             (put-clojure-indent 'reg-event-db 0)
@@ -136,6 +138,11 @@
             (when (eq major-mode 'clojurec-mode)
               (clojure-sort-ns))))
 
+(add-hook 'cider-repl-mode-hook
+          (lambda ()
+            (when (string-equal system-type "darwin") ; Mac OS X
+              (shell-command "say \"It's time to kick ass and chew bubble gum\" &"))))
+
 ;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 ;; (eval-after-load 'flycheck
@@ -152,7 +159,9 @@
 (eval-after-load 'cider-repl
   '(progn
      (define-key cider-repl-mode-map (kbd "C-c #")   'cider-repl-clear-buffer)
-     (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
+     (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)
+     (define-key cider-repl-mode-map (kbd "C-x w s") 'wh-start-app-cmd)
+     (define-key cider-repl-mode-map (kbd "C-x w c") 'wh-start-executor-cmd)))
 
 ;; allow remembering risky variables
 (defun risky-local-variable-p (sym &optional _ignored) nil)
@@ -248,7 +257,11 @@ buffer in current window."
    (current-buffer)))
 
 ;; fns
-(defun wh-start-cmd ()
+(defun wh-start-executor-cmd ()
+  (interactive)
+  (insert "(do (require 'wh.executor.core) (wh.executor.core/start))"))
+
+(defun wh-start-app-cmd ()
   (interactive)
   (insert "(do (require 'wh.dev) (wh.dev/go))"))
 
