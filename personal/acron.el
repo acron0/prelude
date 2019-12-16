@@ -93,6 +93,7 @@
             (put-clojure-indent 'asynchronously 0)
             (put-clojure-indent 'cond-> 0)
             (put-clojure-indent 'cond->> 0)
+            (put-clojure-indent 'def-query-from-template 0)
             (put-clojure-indent 'def-spec-test 0)
             (put-clojure-indent 'defroutes 0)
             (put-clojure-indent 'fail 0)
@@ -140,8 +141,8 @@
 
 (add-hook 'cider-repl-mode-hook
           (lambda ()
-            (when (string-equal system-type "darwin") ; Mac OS X
-              (shell-command "say \"It's time to kick ass and chew bubble gum\" &"))))
+            (when 1 ;(string-equal system-type "darwin") ; Mac OS X
+              (call-process-shell-command "say \"It's time to kick ass and chew bubble gum\" &" nil 0))))
 
 ;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -159,9 +160,7 @@
 (eval-after-load 'cider-repl
   '(progn
      (define-key cider-repl-mode-map (kbd "C-c #")   'cider-repl-clear-buffer)
-     (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)
-     (define-key cider-repl-mode-map (kbd "C-x w s") 'wh-start-app-cmd)
-     (define-key cider-repl-mode-map (kbd "C-x w c") 'wh-start-executor-cmd)))
+     (define-key cider-repl-mode-map (kbd "C-c M-p") 'cider-repl-reset)))
 
 ;; allow remembering risky variables
 (defun risky-local-variable-p (sym &optional _ignored) nil)
@@ -255,19 +254,6 @@ buffer in current window."
        "%s: Can't touch this!"
      "%s is up for grabs.")
    (current-buffer)))
-
-;; fns
-(defun wh-start-executor-cmd ()
-  (interactive)
-  (insert "(do (require 'wh.executor.core) (wh.executor.core/start))"))
-
-(defun wh-start-app-cmd ()
-  (interactive)
-  (insert "(do (require 'wh.dev) (wh.dev/go))"))
-
-(defun wh-prt-fn (prefix)
-  (interactive "sString for prefix: ")
-  (insert "(defn prt [x] (println \"" prefix "\" x) x)"))
 
 ;; transparency?!
 (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
