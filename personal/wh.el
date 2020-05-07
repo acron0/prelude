@@ -1,3 +1,6 @@
+;;
+(setq wh-project-root "/home/acron/projects/wh/works-hub")
+
 ;; fns
 (defun wh-start-executor-cmd ()
   (interactive)
@@ -22,11 +25,23 @@
   (insert "(defn prt [x] (println \"" prefix "\" x) x)")
   (cider-repl-return))
 
+(defun wh-init-eshell ()
+  (interactive)
+  (insert "cd ")
+  (insert wh-project-root)
+  (execute-kbd-macro (kbd "<return>"))
+  (insert "alias s 'grep -ri --exclude-dir target --exclude-dir .shadow-cljs --include \"*.clj*\" --include \"*.edn\" $*'")
+  (execute-kbd-macro (kbd "<return>")))
+
 (eval-after-load 'cider-repl
   '(progn
      (define-key cider-repl-mode-map (kbd "C-x w s") 'wh-start-app-cmd)
      (define-key cider-repl-mode-map (kbd "C-x w x") 'wh-start-executor-cmd)
      (define-key cider-repl-mode-map (kbd "C-x w c") 'wh-clear-subs-cmd)))
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (define-key eshell-mode-map (kbd "C-x w e") 'wh-init-eshell)))
 
 ;; done
 (message "wh is loaded.")

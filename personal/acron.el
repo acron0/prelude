@@ -22,7 +22,19 @@
    ;;flycheck-clojure ;; way too slow to be usable
    ))
 
+;; set up linters
+
 (require 'flycheck-joker)
+(require 'flycheck-clj-kondo)
+
+(dolist (checker '(clj-kondo-clj clj-kondo-cljs clj-kondo-cljc clj-kondo-edn))
+  (setq flycheck-checkers (cons checker (delq checker flycheck-checkers))))
+
+(dolist (checkers '((clj-kondo-clj . clojure-joker)
+                    (clj-kondo-cljs . clojurescript-joker)
+                    (clj-kondo-cljc . clojure-joker)
+                    (clj-kondo-edn . edn-joker)))
+  (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers))))
 
 ;;
 ;; (load-theme 'spolsky t)
@@ -77,7 +89,7 @@
             (fold-dwim-org/minor-mode t)
             (clj-refactor-mode t)
             (flycheck-pos-tip-mode t)
-            (whitespace-mode 0)
+            (whitespace-mode 1)
 
             ;;(linum-mode t)
             ;; wh style (0 = clj align)
@@ -143,6 +155,9 @@
           (lambda ()
             (when 1 ;(string-equal system-type "darwin") ; Mac OS X
               (call-process-shell-command "say \"It's time to kick ass and chew bubble gum\" &" nil 0))))
+
+(add-hook 'inf-mongo-mode-hook
+          'smartparens-strict-mode)
 
 ;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -254,6 +269,20 @@ buffer in current window."
        "%s: Can't touch this!"
      "%s is up for grabs.")
    (current-buffer)))
+
+;; eshell helpers
+(defun eshell-maybe-bol ()
+  (interactive)
+  (message "eshell-maybe-bol")
+  (let ((p (point)))
+    (eshell-bol)
+    (if (= p (point))
+        (beginning-of-line))))
+
+;; TODO doesn't work?!?!?
+;; (add-hook 'eshell-mode-hook
+;;           (lambda ()
+;;             (define-key eshell-mode-map (kbd "C-a") 'eshell-maybe-bol)))
 
 ;; transparency?!
 (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
