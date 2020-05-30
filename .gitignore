@@ -30,3 +30,6 @@ prelude-cheatsheet.aux
 prelude-cheatsheet.log
 anaconda-mode/
 magithub/
+.lsp-session-v1
+node_modules/
+package.lock
