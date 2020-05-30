@@ -32,4 +32,4 @@ anaconda-mode/
 magithub/
 .lsp-session-v1
 node_modules/
-package.lock
+package-lock.json
