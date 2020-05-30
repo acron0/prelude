@@ -30,7 +30,7 @@
   (insert "cd ")
   (insert wh-project-root)
   (execute-kbd-macro (kbd "<return>"))
-  (insert "alias s 'grep -ri --exclude-dir target --exclude-dir .shadow-cljs --include \"*.clj*\" --include \"*.edn\" $*'")
+  (insert "alias s 'grep -ri --exclude-dir target --exclude-dir .shadow-cljs --include \"*.clj*\" --include \"*.edn\" --include \"*.sass\" $*'")
   (execute-kbd-macro (kbd "<return>")))
 
 (eval-after-load 'cider-repl

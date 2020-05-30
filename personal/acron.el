@@ -19,6 +19,7 @@
    auto-dim-other-buffers
    flycheck-joker
    flycheck-pos-tip
+   lsp-mode
    ;;flycheck-clojure ;; way too slow to be usable
    ))
 
@@ -36,11 +37,7 @@
                     (clj-kondo-edn . edn-joker)))
   (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers))))
 
-;;
-;; (load-theme 'spolsky t)
-;; (custom-theme-set-variables
-;;  'spolsky
-;;  '(linum-format " %i "))
+;; set up themes
 
 (load-theme 'doom-vibrant t)
 (load-theme 'smart-mode-line-respectful t)
@@ -63,7 +60,8 @@
     (set-default-font "Inconsolata-12"))))
 ;;(set-background-color "black")
 
-;;
+;; set up modes
+
 (global-git-gutter+-mode t)
 (aggressive-indent-global-mode t)
 (add-to-list 'aggressive-indent-excluded-modes 'sass-mode)
@@ -79,56 +77,72 @@
 (setq cider-repl-history-file (concat user-emacs-directory "cider-history")
       cider-repl-history-size 1000)
 
+(defun clojure-mode-config ()
+  (prettify-symbols-mode t)
+  (projectile-mode t)
+  (rainbow-mode t)
+  (idle-highlight-mode t)
+  (hs-minor-mode t)
+  (fold-dwim-org/minor-mode t)
+  (clj-refactor-mode t)
+  (flycheck-pos-tip-mode t)
+  (whitespace-mode t)
+  (lsp t)
+
+  ;; lambda symbol
+  (push '("#" . ?λ) prettify-symbols-alist)
+  (setq-local prettify-symbols-compose-predicate
+              (lambda (begin end match)
+                (and (prettify-symbols-default-compose-p begin end match)
+                     (or (not (equal match "#")) (eq (char-after end) ?\()))))
+
+  ;;(linum-mode t)
+  ;; wh style (0 = clj align)
+  (put-clojure-indent '-> 0)
+  (put-clojure-indent '->> 0)
+  (put-clojure-indent ':import 0)
+  (put-clojure-indent ':require 0)
+  (put-clojure-indent ':require-macros 0)
+  (put-clojure-indent 'and 0)
+  (put-clojure-indent 'as-> 0)
+  (put-clojure-indent 'as->> 0)
+  (put-clojure-indent 'assoc 0)
+  (put-clojure-indent 'asynchronously 0)
+  (put-clojure-indent 'cond-> 0)
+  (put-clojure-indent 'cond->> 0)
+  (put-clojure-indent 'def-query-from-template 0)
+  (put-clojure-indent 'def-spec-test 0)
+  (put-clojure-indent 'defroutes 0)
+  (put-clojure-indent 'fail 0)
+  (put-clojure-indent 'hash-map 0)
+  (put-clojure-indent 'html/deftemplate 0)
+  (put-clojure-indent 'i-util/run-async 1)
+  (put-clojure-indent 'i-util/run-async 1)
+  (put-clojure-indent 'if-mlet 1)
+  (put-clojure-indent 'mapv 0)
+  (put-clojure-indent 'mdo 0)
+  (put-clojure-indent 'merge 0)
+  (put-clojure-indent 'merge 0)
+  (put-clojure-indent 'prom/mlet 1)
+  (put-clojure-indent 'prom/if-mlet 1)
+  (put-clojure-indent 'prom/when-mlet 1)
+  (put-clojure-indent 'reg-event-db 0)
+  (put-clojure-indent 'reg-event-fx 0)
+  (put-clojure-indent 'reg-fx 0)
+  (put-clojure-indent 'reg-sub 0)
+  (put-clojure-indent 'reg-sub-raw 0)
+  (put-clojure-indent 's/fdef 1)
+  (put-clojure-indent 'letsub 1))
+
 ;; modes
 (add-hook 'clojure-mode-hook
-          (lambda ()
-            (projectile-mode t)
-            (rainbow-mode t)
-            (idle-highlight-mode t)
-            (hs-minor-mode t)
-            (fold-dwim-org/minor-mode t)
-            (clj-refactor-mode t)
-            (flycheck-pos-tip-mode t)
-            (whitespace-mode 1)
+          'clojure-mode-config)
 
-            ;;(linum-mode t)
-            ;; wh style (0 = clj align)
-            (put-clojure-indent '-> 0)
-            (put-clojure-indent '->> 0)
-            (put-clojure-indent ':import 0)
-            (put-clojure-indent ':require 0)
-            (put-clojure-indent ':require-macros 0)
-            (put-clojure-indent 'and 0)
-            (put-clojure-indent 'as-> 0)
-            (put-clojure-indent 'as->> 0)
-            (put-clojure-indent 'assoc 0)
-            (put-clojure-indent 'asynchronously 0)
-            (put-clojure-indent 'cond-> 0)
-            (put-clojure-indent 'cond->> 0)
-            (put-clojure-indent 'def-query-from-template 0)
-            (put-clojure-indent 'def-spec-test 0)
-            (put-clojure-indent 'defroutes 0)
-            (put-clojure-indent 'fail 0)
-            (put-clojure-indent 'hash-map 0)
-            (put-clojure-indent 'html/deftemplate 0)
-            (put-clojure-indent 'i-util/run-async 1)
-            (put-clojure-indent 'i-util/run-async 1)
-            (put-clojure-indent 'if-mlet 1)
-            (put-clojure-indent 'mapv 0)
-            (put-clojure-indent 'mdo 0)
-            (put-clojure-indent 'merge 0)
-            (put-clojure-indent 'merge 0)
-            (put-clojure-indent 'prom/mlet 1)
-            (put-clojure-indent 'prom/if-mlet 1)
-            (put-clojure-indent 'prom/when-mlet 1)
-            (put-clojure-indent 'reg-event-db 0)
-            (put-clojure-indent 'reg-event-fx 0)
-            (put-clojure-indent 'reg-fx 0)
-            (put-clojure-indent 'reg-sub 0)
-            (put-clojure-indent 'reg-sub-raw 0)
-            (put-clojure-indent 's/fdef 1)
+(add-hook 'clojurescript-mode-hook
+          'clojure-mode-config)
 
-            (message "Hello, Clojure!")))
+(add-hook 'clojurec-mode-hook
+          'clojure-mode-config)
 
 (add-hook 'magit-mode-hook
           'turn-on-magit-gh-pulls)
@@ -159,6 +173,23 @@
 (add-hook 'inf-mongo-mode-hook
           'smartparens-strict-mode)
 
+;; set up lsp
+(add-hook 'lsp-mode-hook
+          (lambda ()
+            (dolist (m '(clojure-mode
+                         clojurec-mode
+                         clojurescript-mode))
+              (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+            (setq lsp-enable-indentation nil
+                  lsp-clojure-server-command '("bash" "-c" "clojure-lsp"))))
+
+;; we usually do keybindings with `eval-after-load' but eshell is weird
+;; https://github.com/noctuid/general.el/issues/80
+(add-hook 'eshell-mode
+          (lambda ()
+            (smartparens-mode t)
+            (define-key eshell-mode-map (kbd "C-c #") 'eshell/clear)))
+
 ;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 ;; (eval-after-load 'flycheck
@@ -186,6 +217,7 @@
 (global-set-key (kbd "C-x C-p") 'crux-swap-windows)
 (global-set-key (kbd "C-c c o") 'org-capture)
 (global-set-key (kbd "C-x <end>") 'golden-ratio)
+(global-set-key (kbd "C-x .") 'lsp-find-references)
 
 ;; unbindings
 ;;(global-unset-key (kbd "<f11>"))
